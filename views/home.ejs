@@ -1,0 +1,30 @@
+<%- include('layout', {
+  body: `
+    <div class="home-card-page">
+      <div class="home-left">
+        <h2>Цифровой медицинский кооператив</h2>
+        <p class="home-subtitle">
+          Веб‑система для учёта пациентов, осмотров, диагнозов и лекарственных назначений.
+        </p>
+
+        <ul class="home-list">
+          <li>Авторизация и регистрация врача</li>
+          <li>Карточки пациентов и история приёмов</li>
+          <li>Учёт визитов на приёме и на дому</li>
+          <li>Справочник диагнозов и лекарственных средств</li>
+          <li>Отчёты по датам, диагнозам и препаратам</li>
+        </ul>
+
+        <div class="home-actions">
+            <button type="button" class="button-primary" onclick="location.href='/login'">
+                Войти как врач
+            </button>
+            <button type="button" class="button-secondary" onclick="location.href='/register'">
+                Зарегистрироваться
+            </button>
+        </div>
+      </div>
+    </div>
+  `,
+  doctor
+}) %>

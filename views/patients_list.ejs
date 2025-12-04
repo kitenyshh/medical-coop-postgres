@@ -1,0 +1,45 @@
+<%- include('layout', {
+  body: `
+    <div class="exam-container">
+      <h2>👥 Список пациентов</h2>
+      <p><a href="/patients/new">+ Добавить нового пациента</a></p>
+      <table>
+        <thead>
+          <tr>
+            <th>ФИО</th>
+            <th>Пол</th>
+            <th>Дата рождения</th>
+            <th>Адрес</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            patients.length === 0
+              ? '<tr><td colspan="5">Пациенты не найдены</td></tr>'
+              : patients.map(p => `
+                  <tr>
+                    <td>${p.full_name}</td>
+                    <td>${p.gender || '-'}</td>
+                    <td>${
+                        p.birth_date
+                            ? (() => {
+                                const d = new Date(p.birth_date);
+                                const dd = String(d.getDate()).padStart(2, '0');
+                                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                const yyyy = d.getFullYear();
+                                return `${dd}.${mm}.${yyyy}`;
+                            })()
+                            : '-'
+                    }</td>
+                    <td>${p.home_address || '-'}</td>
+                    <td><a href="/patients/${p.id}">Открыть карточку</a></td>
+                  </tr>
+                `).join('')
+          }
+        </tbody>
+      </table>
+    </div>
+  `,
+  doctor
+}) %>

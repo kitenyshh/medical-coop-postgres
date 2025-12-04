@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Медицинский кооператив (PostgreSQL)</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>🏥 Медицинский кооператив</h1>
+    <% if (doctor) { %>
+      <div class="user-info">
+        Врач: <%= doctor.full_name %> |
+        <a href="/exam">Осмотр</a> |
+        <a href="/patients">Пациенты</a> |
+        <a href="/diagnoses">Диагнозы</a> |
+        <a href="/reports">Отчёты</a> |
+        <a href="/logout">Выход</a>
+      </div>
+    <% } %>
+  </header>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>МИРЭА</span>
+      <span>Никита Збиняков</span>
+      <a href="https://t.me/kitenyshh" target="_blank" class="tg-button" aria-label="Telegram">
+        <svg viewBox="0 0 24 24" class="tg-icon" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.04 15.31L8.9 18.63C9.18 18.63 9.3 18.51 9.45 18.36L10.78 17.08L13.99 19.44C14.58 19.77 15.01 19.61 15.17 18.87L17.23 9.25C17.44 8.35 16.9 7.96 16.33 8.21L5.79 12.26C4.9 12.61 4.91 13.11 5.63 13.33L8.32 14.17L14.77 10.1C15.08 9.9 15.36 10.01 15.13 10.22L9.04 15.31Z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

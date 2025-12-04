@@ -1,0 +1,102 @@
+<%- include('layout', {
+  body: `
+    <div class="reports-container">
+      <h2>📊 Отчётность</h2>
+
+      <div class="report-section">
+        <h3>📅 Вызовы по дате</h3>
+        <form method="GET" action="/reports" class="form-row">
+          <input type="date" name="date" value="${date}">
+          <button type="submit" class="button-secondary">Показать</button>
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Кол-во визитов</th>
+              <th>Врачи</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              visitsByDate.length === 0
+                ? '<tr><td colspan="3">Нет данных за выбранную дату</td></tr>'
+                : visitsByDate.map(r => `
+                    <tr>
+                        <td>${
+                            r.visit_date
+                                ? (() => {
+                                    const d = new Date(r.visit_date);
+                                    const dd = String(d.getDate()).padStart(2, '0');
+                                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                    const yyyy = d.getFullYear();
+                                    return `${dd}.${mm}.${yyyy}`;
+                                })()
+                                : '-'
+                        }</td>
+
+
+                      <td>${r.visits_count}</td>
+                      <td>${r.doctors_list || ''}</td>
+                    </tr>
+                  `).join('')
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="report-section">
+        <h3>🏥 Больные по диагнозу</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Диагноз</th>
+              <th>Кол-во пациентов</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              byDiagnosis.length === 0
+                ? '<tr><td colspan="2">Данных пока нет</td></tr>'
+                : byDiagnosis.map(r => `
+                    <tr>
+                      <td>${r.diagnosis_name}</td>
+                      <td>${r.patients_count}</td>
+                    </tr>
+                  `).join('')
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="report-section">
+        <h3>💊 Лекарства и побочные эффекты</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Название</th>
+              <th>Приём</th>
+              <th>Действие</th>
+              <th>Побочные эффекты</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              medicines.length === 0
+                ? '<tr><td colspan="4">Лекарства не добавлены</td></tr>'
+                : medicines.map(m => `
+                    <tr>
+                      <td>${m.medicine_name}</td>
+                      <td>${m.intake_method || '-'}</td>
+                      <td>${m.action_description || '-'}</td>
+                      <td>${m.side_effects || '-'}</td>
+                    </tr>
+                  `).join('')
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `,
+  doctor
+}) %>

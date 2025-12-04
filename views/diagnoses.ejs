@@ -1,0 +1,39 @@
+<%- include('layout', {
+  body: `
+    <div class="exam-container">
+      <h2>📚 Справочник диагнозов</h2>
+
+      ${error ? `<div class="error">${error}</div>` : ''}
+
+      <h3>Существующие диагнозы</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Описание</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            diagnoses.length === 0
+              ? '<tr><td colspan="2">Диагнозы пока не добавлены</td></tr>'
+              : diagnoses.map(d => `
+                  <tr>
+                    <td>${d.name}</td>
+                    <td>${d.description || '-'}</td>
+                  </tr>
+                `).join('')
+          }
+        </tbody>
+      </table>
+
+      <h3>➕ Добавить новый диагноз</h3>
+      <form method="POST">
+        <input name="name" placeholder="Название диагноза" required>
+        <textarea name="description" placeholder="Описание (по желанию)" rows="2"></textarea>
+        <button type="submit" class="button-primary">СОХРАНИТЬ ДИАГНОЗ</button>
+      </form>
+    </div>
+  `,
+  doctor
+}) %>

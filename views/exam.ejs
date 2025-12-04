@@ -1,0 +1,78 @@
+<%- include('layout', {
+  body: `
+    <div class="exam-container">
+      <h2>🩺 Новый осмотр</h2>
+      <form method="POST" action="/exam">
+        <h3>👤 Пациент</h3>
+        <div class="form-row">
+          <select name="patient_id" required>
+            <option value="">Выберите пациента</option>
+            ${
+              patients.map(p => `
+                <option value="${p.id}">
+                  ${p.full_name} (${p.gender || '-'}, ${
+                    p.birth_date
+                      ? (() => {
+                          const d = new Date(p.birth_date);
+                          const dd = String(d.getDate()).padStart(2, '0');
+                          const mm = String(d.getMonth() + 1).padStart(2, '0');
+                          const yyyy = d.getFullYear();
+                          return `${dd}.${mm}.${yyyy}`;
+                        })()
+                      : '-'
+                  })
+                </option>
+              `).join('')
+            }
+          </select>
+        </div>
+
+        <h3>📅 Параметры приёма</h3>
+        <div class="form-row">
+          <input name="visit_date" type="date" required>
+          <select name="location" required>
+            <option>Приём</option>
+            <option>На дому</option>
+          </select>
+        </div>
+
+        <h3>📝 Жалобы и диагноз</h3>
+        <textarea name="symptoms" placeholder="Симптомы" required rows="3"></textarea>
+
+        <div class="form-row">
+          <select name="diagnosis_id" required>
+            <option value="">Выберите диагноз</option>
+            ${
+              diagnoses.map(d => `
+                <option value="${d.id}">${d.name}</option>
+              `).join('')
+            }
+          </select>
+        </div>
+
+        <textarea name="prescription_text" placeholder="Предписания пациенту" required rows="2"></textarea>
+
+        <h3>💊 Назначение существующего лекарства</h3>
+        <div class="form-row">
+          <select name="existing_medicine_id">
+            <option value="">Выбрать лекарство</option>
+            ${
+              medicines.map(m => `
+                <option value="${m.id}">${m.name}</option>
+              `).join('')
+            }
+          </select>
+        </div>
+
+        <h3>➕ Или добавить новое лекарство</h3>
+        <input name="new_med_name" placeholder="Название лекарства">
+        <input name="new_med_intake_method" placeholder="Способ приёма">
+        <textarea name="new_med_action_description" placeholder="Описание предполагаемого действия" rows="2"></textarea>
+        <textarea name="new_med_side_effects" placeholder="Возможные побочные эффекты" rows="2"></textarea>
+
+        <button type="submit" class="button-primary">💾 СОХРАНИТЬ ОСМОТР</button>
+      </form>
+    </div>
+  `,
+  doctor
+}) %>

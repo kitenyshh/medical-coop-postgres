@@ -1,0 +1,88 @@
+<%- include('layout', {
+  body: `
+    <div class="exam-container">
+      <h2>📂 Карточка пациента</h2>
+      <p><strong>ФИО:</strong> ${patient.full_name}</p>
+      <p><strong>Пол:</strong> ${patient.gender || '-'}</p>
+      <p><strong>Дата рождения:</strong> ${
+        patient.birth_date
+            ? (() => {
+                const d = new Date(patient.birth_date);
+                const dd = String(d.getDate()).padStart(2, '0');
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const yyyy = d.getFullYear();
+                return `${dd}.${mm}.${yyyy}`;
+            })()
+            : '-'
+       }</p>
+
+      <p><strong>Адрес:</strong> ${patient.home_address || '-'}</p>
+
+      <h3>📜 Приёмы, диагнозы и лекарства</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Дата</th>
+            <th>Место</th>
+            <th>Симптомы</th>
+            <th>Диагноз</th>
+            <th>Предписания</th>
+            <th>Лекарства</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            visits.length === 0
+              ? '<tr><td colspan="6">Приёмов пока нет</td></tr>'
+              : visits.map(v => `
+                  <tr>
+                    <td>${
+                        v.visit_date
+                            ? (() => {
+                                const d = new Date(v.visit_date);
+                                const dd = String(d.getDate()).padStart(2, '0');
+                                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                const yyyy = d.getFullYear();
+                                return `${dd}.${mm}.${yyyy}`;
+                            })()
+                            : '-'
+                    }</td>
+
+                    <td>${v.location}</td>
+                    <td>${v.symptoms}</td>
+                    <td>${v.diagnosis_name || '-'}</td>
+                    <td>${v.prescription_text}</td>
+                    <td>${v.medicines || '-'}</td>
+                  </tr>
+                `).join('')
+          }
+        </tbody>
+      </table>
+
+      <h3>➕ Добавить новое заболевание</h3>
+      <form method="POST" action="/patients/${patient.id}/add-diagnosis">
+        <div class="form-row">
+          <input name="visit_date" type="date" placeholder="Дата приёма">
+          <select name="location">
+            <option value="Приём">Приём</option>
+            <option value="На дому">На дому</option>
+          </select>
+        </div>
+        <textarea name="symptoms" placeholder="Симптомы" required rows="2"></textarea>
+        <div class="form-row">
+          <select name="diagnosis_id" required>
+            <option value="">Выберите диагноз</option>
+            ${
+              diagnoses.map(d => `
+                <option value="${d.id}">${d.name}</option>
+              `).join('')
+            }
+          </select>
+        </div>
+        <textarea name="prescription_text" placeholder="Предписания пациенту" required rows="2"></textarea>
+        <button type="submit" class="button-primary">Добавить диагноз</button>
+      </form>
+    </div>
+  `,
+  doctor
+}) %>
